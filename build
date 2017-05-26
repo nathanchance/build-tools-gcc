@@ -62,6 +62,21 @@ TMPFS="yes"
 # If there are no parameters, assume user just wants to build
 [[ $# -eq 0 ]] && BUILD=true
 
+for arg in "$@"; do
+  shift
+  case "$arg" in
+    "--arm")      set -- "$@" "-a" ;;
+    "--build")    set -- "$@" "-b" ;;
+    "--clean")    set -- "$@" "-c" ;;
+    "--download") set -- "$@" "-d" ;;
+    "--help")     set -- "$@" "-h" ;;
+    "--linaro")   set -- "$@" "-l" ;;
+    "--no-tmpfs") set -- "$@" "-n" ;;
+    "--update")   set -- "$@" "-u" ;;
+    *)            set -- "$@" "$arg"
+  esac
+done
+
 while getopts ":abcdhlnu" opt; do
     case ${opt} in
         a)
