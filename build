@@ -62,35 +62,48 @@ TMPFS="yes"
 # If there are no parameters, assume user just wants to build
 [[ $# -eq 0 ]] && BUILD=true
 
-# Otherwise, filter and set flags
-while [[ $# -ge 1 ]]; do
-    case "${1}" in
-        "-a"|"--arm")
+for arg in "$@"; do
+  shift
+  case "$arg" in
+    "--arm")      set -- "$@" "-a" ;;
+    "--build")    set -- "$@" "-b" ;;
+    "--clean")    set -- "$@" "-c" ;;
+    "--download") set -- "$@" "-d" ;;
+    "--help")     set -- "$@" "-h" ;;
+    "--linaro")   set -- "$@" "-l" ;;
+    "--no-tmpfs") set -- "$@" "-n" ;;
+    "--update")   set -- "$@" "-u" ;;
+    *)            set -- "$@" "$arg"
+  esac
+done
+
+while getopts ":abcdhlnu" opt; do
+    case ${opt} in
+        a)
             TARGET="arm-linux-gnueabi"
             ARCH="arm" ;;
-        "-b"|"--build")
+        b)
             BUILD=true ;;
-        "-c"|"--clean")
-            CLEAN=true ;;
-        "-d"|"--download")
-            DOWNLOAD=true ;;
-        "-h"|"--help")
-            echo; help_menu ;;
-        "-l"|"--linaro")
+        c)
+           CLEAN=true ;;
+        d)
+           DOWNLOAD=true ;;
+        h)
+           echo; help_menu ;;
+        l)
             # There are a few Linaro branches to consider:
             # linaro-local/releases/linaro-6.3-2017.05
             # linaro-local/gcc-6-integration-branch
             # linaro/gcc-6-branch
             GCC="linaro-local/releases/linaro-6.3-2017.05" ;;
-        "-nt"|"--no-tmpfs")
-            TMPFS="no" ;;
-        "-u"|"--update")
+        n)
+            TMPFS=no ;;
+        u)
             UPDATE=true ;;
+        *)
+            reportWarning "Unknown parameter ${OPTARG} passed, ignoring"
     esac
-
-    shift
 done
-
 
 #############
 # VARIABLES #
@@ -314,7 +327,7 @@ fi
 if [[ $( echo ${GCC} | grep linaro ) ]]; then
 	TAG=linaro-$( TZ=UTC date +%Y%m%d )
 else
-	TAG=$( TZ=UTC date +%Y%m%d ) 
+	TAG=$( TZ=UTC date +%Y%m%d )
 fi
 
 if [[ $( grep -i "Ubuntu" /etc/os-release ) ]]; then
