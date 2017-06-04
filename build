@@ -173,7 +173,14 @@ if [[ ${CLEAN} = true ]]; then
     rm -rf build-binutils/*
     rm -rf *.tar.xz
     rm -rf *linux-gnu*
-    echo "Clean up successful!"
+    if [[ "$( ls -A build-glibc )" ]] || [[ "$( ls -A build-gcc )" ]] || [[ "$( ls -A build-binutils )" ]] || [[ "$( ls -A build-glibc )" ]] || [[ -f *.tar.xz ]] || [[ -f *linux-gnu* ]]; then
+        echo "Clean up failed! Aborting. Try checking that you have proper permissions to delete files."
+        exit
+
+    else
+        echo "Clean up successful!"
+
+    fi
 fi
 
 
