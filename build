@@ -108,7 +108,7 @@ PATH=${INSTALL}/bin:${PATH}
 JOBS="-j$( nproc --all )"
 
 # Binary versions
-BINUTILS="binutils-2_28-branch"
+BINUTILS="binutils-2_29-branch"
 GMP="gmp-6.1.2"
 MPFR="mpfr-3.1.5"
 MPC="mpc-1.0.3"
