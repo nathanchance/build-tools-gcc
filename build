@@ -158,23 +158,23 @@ if [[ ${VERSION} -le 5 ]]; then
 else
     if [[ ! -d isl ]]; then
         header "DOWNLOADING ISL"
-        git clone git://repo.or.cz/isl.git --depth 1 -b ${ISL}
+        git clone git://repo.or.cz/isl.git -b ${ISL}
     fi
 fi
 
 if [[ ! -d binutils ]]; then
     header "DOWNLOADING BINUTILS"
-    git clone https://git.linaro.org/toolchain/binutils-gdb.git binutils --depth 1 -b ${BINUTILS}
+    git clone https://git.linaro.org/toolchain/binutils-gdb.git binutils -b ${BINUTILS}
 fi
 
 if [[ ! -d gcc ]]; then
     header "DOWNLOADING GCC"
-    git clone https://git.linaro.org/toolchain/gcc.git --depth 1 -b ${GCC}
+    git clone https://git.linaro.org/toolchain/gcc.git -b ${GCC}
 fi
 
 if [[ ! -d linux ]]; then
     header "DOWNLOADING LINUX KERNEL"
-    git clone https://github.com/torvalds/linux.git --depth 1
+    git clone https://github.com/torvalds/linux.git
 fi
 
 if [[ ${EXTRACTION_NEEDED} = true ]]; then
