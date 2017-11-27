@@ -42,13 +42,19 @@
 
 
 #############
+# FUNCTIONS #
+#############
+
+BASH_DIR=$(cd $(dirname $(readlink -f "${BASH_SOURCE[0]}")) && pwd)
+source ${BASH_DIR}/functions
+
+
+#############
 # VARIABLES #
 #############
 
 # Configuration variables
 CONFIGURATION="--disable-multilib --disable-werror"
-INSTALL="${BASH_DIR}/${TARGET}"
-PATH=${INSTALL}/bin:${PATH}
 JOBS="-j$(nproc --all)"
 
 # Binary versions
@@ -58,14 +64,6 @@ MPFR="mpfr-3.1.6"
 MPC="mpc-1.0.3"
 ISL="master"
 GLIBC="glibc-2.26"
-
-
-#############
-# FUNCTIONS #
-#############
-
-BASH_DIR=$(cd $(dirname $(readlink -f "${BASH_SOURCE[0]}")) && pwd)
-source ${BASH_DIR}/functions
 
 
 ##############
@@ -252,6 +250,9 @@ fi
 ###############
 # PREPARATION #
 ###############
+
+INSTALL="${BASH_DIR}/${TARGET}"
+PATH=${INSTALL}/bin:${PATH}
 
 if [[ ! -d gcc ]]; then
     report_error "GCC source is missing! Please check your connection and rerun the script!" -h
